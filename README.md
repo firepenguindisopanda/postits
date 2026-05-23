@@ -103,3 +103,5 @@ If you so ever choose to use this template for your own projects, please conside
 3. You'd need to look into a database migration / upgrade tool like alembic
 4. You may want to dockerize the application for easier deployment
 5. You may want to switch from storing cookies in localstorage to only cookies depending on your security needs.
+
+## TDD - we write pytests first then write code to pass them
