@@ -30,9 +30,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            when {
-                branch 'main'
-            }
+
             steps {
                 sh """
                     rsync -av --delete \
