@@ -33,7 +33,7 @@ pipeline {
 
             steps {
                 sh """
-                    rsync -av --delete \
+                    sudo rsync -av --delete --chown=swepi:swepi \
                         --exclude='venv/' \
                         --exclude='.env' \
                         --exclude='__pycache__/' \
@@ -43,7 +43,7 @@ pipeline {
                         --exclude='.git/' \
                         --exclude='project_starter.egg-info/' \
                         ./ ${PRODUCTION_DIR}/
-                    ${PRODUCTION_DIR}/venv/bin/pip install -e ${PRODUCTION_DIR}
+                    sudo -u swepi ${PRODUCTION_DIR}/venv/bin/pip install -e ${PRODUCTION_DIR}
                     sudo /usr/bin/systemctl restart fastapi-app
                 """
             }
