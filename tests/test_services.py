@@ -1,5 +1,5 @@
 import pytest
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 from app.models.user import User
 from app.repositories.user import UserRepository
@@ -130,7 +130,6 @@ class TestUserService:
 class TestPostService:
     def test_create_post(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         from app.services.post_service import PostService
         user = User(
@@ -150,7 +149,6 @@ class TestPostService:
 
     def test_get_user_posts(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         from app.services.post_service import PostService
         user = User(
@@ -174,7 +172,6 @@ class TestCommentService:
     def test_create_comment(self, db):
         from app.models.user import User
         from app.models.post import Post
-        from app.models.comment import Comment
         from app.repositories.comment import CommentRepository
         from app.services.comment_service import CommentService
         user = User(
@@ -199,7 +196,6 @@ class TestCommentService:
     def test_get_post_comments(self, db):
         from app.models.user import User
         from app.models.post import Post
-        from app.models.comment import Comment
         from app.repositories.comment import CommentRepository
         from app.services.comment_service import CommentService
         user = User(

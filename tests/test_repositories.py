@@ -1,5 +1,5 @@
 import pytest
-from sqlmodel import Session, SQLModel, create_engine, select
+from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 from app.models.user import User
 from app.repositories.user import UserRepository
@@ -60,7 +60,6 @@ class TestUserRepository:
         assert result.email == "new@example.com"
 
     def test_create_user_duplicate_username(self, repo, sample_user):
-        from sqlmodel import SQLModel as BaseModel
         user_data = SignupRequest(
             username=sample_user.username,
             email="other@example.com",
@@ -181,7 +180,6 @@ class TestUserRepository:
 class TestPostRepository:
     def test_create_post(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         user = User(
             username="postrepo_user",
@@ -200,7 +198,6 @@ class TestPostRepository:
 
     def test_get_post_by_id(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         user = User(
             username="postrepo2",
@@ -225,7 +222,6 @@ class TestPostRepository:
 
     def test_get_posts_by_user(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         user = User(
             username="postrepo3",
@@ -244,7 +240,6 @@ class TestPostRepository:
 
     def test_delete_post(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         user = User(
             username="postrepo4",
@@ -263,7 +258,6 @@ class TestPostRepository:
 
     def test_get_all_posts(self, db):
         from app.models.user import User
-        from app.models.post import Post
         from app.repositories.post import PostRepository
         user = User(
             username="postrepo5",
@@ -285,7 +279,6 @@ class TestCommentRepository:
     def test_create_comment(self, db):
         from app.models.user import User
         from app.models.post import Post
-        from app.models.comment import Comment
         from app.repositories.comment import CommentRepository
         user = User(
             username="comrepo1",
@@ -308,7 +301,6 @@ class TestCommentRepository:
     def test_get_comments_by_post(self, db):
         from app.models.user import User
         from app.models.post import Post
-        from app.models.comment import Comment
         from app.repositories.comment import CommentRepository
         user = User(
             username="comrepo2",
@@ -332,7 +324,6 @@ class TestCommentRepository:
     def test_delete_comment(self, db):
         from app.models.user import User
         from app.models.post import Post
-        from app.models.comment import Comment
         from app.repositories.comment import CommentRepository
         user = User(
             username="comrepo3",

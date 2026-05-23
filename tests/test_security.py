@@ -35,7 +35,7 @@ class TestVerifyPassword:
 
     def test_verify_against_different_hash(self):
         h1 = encrypt_password("PassA")
-        h2 = encrypt_password("PassB")
+        encrypt_password("PassB")
         assert not verify_password("PassB", h1)
 
 

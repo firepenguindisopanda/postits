@@ -1,5 +1,4 @@
 from fastapi import Request
-import typing
 
 def flash(request: Request, message: str, type: str = "success") -> None:
     if "_messages" not in request.session:
