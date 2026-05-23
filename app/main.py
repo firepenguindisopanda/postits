@@ -27,7 +27,7 @@ app.mount("/static", static_files, name="static")
 
 @app.exception_handler(status.HTTP_401_UNAUTHORIZED)
 async def unauthorized_redirect_handler(request: Request, exc: Exception):
-    print("Hello World - version 2")
+    print("Hello World - version 3")
     return templates.TemplateResponse(
         request=request, 
         name="401.html",
