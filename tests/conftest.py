@@ -11,7 +11,7 @@ from sqlmodel.pool import StaticPool
 from sqlalchemy import create_engine as sa_create_engine
 
 os.environ["DATABASE_URI"] = "sqlite://"
-os.environ["SECRET_KEY"] = "test-secret-key-12345"
+os.environ["SECRET_KEY"] = "test-secret-key-12345-test-secret-key-"
 os.environ["ENV"] = "test"
 
 def _test_create_engine(url, **kwargs):

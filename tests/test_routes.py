@@ -68,7 +68,7 @@ class TestLoginRoute:
             data={"username": "", "password": ""},
             follow_redirects=False,
         )
-        assert response.status_code in (status.HTTP_303_SEE_OTHER, status.HTTP_422_UNPROCESSABLE_ENTITY)
+        assert response.status_code in (status.HTTP_303_SEE_OTHER, status.HTTP_422_UNPROCESSABLE_CONTENT)
 
 
 class TestRegisterRoute:
