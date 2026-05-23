@@ -33,7 +33,7 @@ class TestLoginRoute:
         assert response.status_code == status.HTTP_200_OK
         assert response.headers["content-type"].startswith("text/html")
 
-    def test_login_valid_credentials(self, client, test_user_data):
+    def test_login_valid_credentials(self, client, test_user, test_user_data):
         response = client.post(
             "/login",
             data={"username": test_user_data["username"], "password": test_user_data["password"]},
@@ -91,7 +91,7 @@ class TestRegisterRoute:
         location = response.headers.get("location", "")
         assert "/login" in location
 
-    def test_register_duplicate_username(self, client, test_user_data):
+    def test_register_duplicate_username(self, client, test_user, test_user_data):
         response = client.post(
             "/register",
             data={
@@ -105,7 +105,7 @@ class TestRegisterRoute:
         location = response.headers.get("location", "")
         assert "/register" in location
 
-    def test_register_duplicate_email(self, client, test_user_data):
+    def test_register_duplicate_email(self, client, test_user, test_user_data):
         response = client.post(
             "/register",
             data={

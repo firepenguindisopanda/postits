@@ -15,7 +15,7 @@ class RegularUserCreate(UserBase):
     role:str = "regular_user"
 
 class UserResponse(SQLModel):
-    id: int
+    user_id: int
     username:str
     email: EmailStr
 

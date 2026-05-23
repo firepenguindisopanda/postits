@@ -70,6 +70,9 @@ def app_fixture() -> FastAPI:
 
     @application.exception_handler(status.HTTP_401_UNAUTHORIZED)
     async def unauthorized_redirect_handler(request: Request, exc: Exception):
+        if request.url.path.startswith("/api"):
+            from fastapi.responses import JSONResponse
+            return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": "Unauthorized"})
         return templates.TemplateResponse(request=request, name="401.html")
 
     return application
