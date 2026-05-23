@@ -2,17 +2,11 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_DIR = "/home/swepi/Desktop/FastAPIStarter-main"
-        VENV_DIR    = "${PROJECT_DIR}/venv"
+        PRODUCTION_DIR = "/home/swepi/Desktop/FastAPIStarter-main"
+        VENV_DIR       = "${WORKSPACE}/venv"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Setup') {
             steps {
                 sh """
@@ -50,8 +44,8 @@ pipeline {
                         --exclude='.ruff_cache/' \
                         --exclude='.git/' \
                         --exclude='project_starter.egg-info/' \
-                        ./ ${PROJECT_DIR}/
-                    ${VENV_DIR}/bin/pip install -e ${PROJECT_DIR}
+                        ./ ${PRODUCTION_DIR}/
+                    ${PRODUCTION_DIR}/venv/bin/pip install -e ${PRODUCTION_DIR}
                     sudo /usr/bin/systemctl restart fastapi-app
                 """
             }
