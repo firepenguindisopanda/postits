@@ -29,12 +29,13 @@ async def login_action_ajax(
         flash(request, "Incorrect username or password", "danger")
         return RedirectResponse(url=request.url_for("login_view"), status_code=status.HTTP_303_SEE_OTHER)
     
+    is_https = request.url.scheme == "https"
     response = RedirectResponse(url=request.url_for("index_view"), status_code=status.HTTP_303_SEE_OTHER)
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
-        samesite="none",
-        secure=True,
+        samesite="none" if is_https else "lax",
+        secure=is_https,
     )
     return response
