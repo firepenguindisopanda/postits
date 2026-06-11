@@ -1,5 +1,5 @@
 import typer
-from typing import Optional, List
+from typing import Optional
 from tabulate import tabulate
 from app.database import get_cli_session
 from app.repositories.user import UserRepository
