@@ -105,3 +105,45 @@ If you so ever choose to use this template for your own projects, please conside
 5. You may want to switch from storing cookies in localstorage to only cookies depending on your security needs.
 
 ## TDD - we write pytests first then write code to pass them
+
+## CLI
+
+A Typer-based CLI is available for testing CRUD operations directly. Run it with `python -m app.cli`.
+
+```
+Usage: python -m app.cli COMMAND [ARGS]...
+
+Commands:
+  users      Manage users
+  posts      Manage posts
+  comments   Manage comments
+```
+
+### Users
+
+| Command | Description |
+|---|---|
+| `users create <username> <email> <password>` | Create a new user |
+| `users list` | List all users |
+| `users get <id>` | Get user by ID |
+| `users update <id> --username X --email Y` | Update a user |
+| `users delete <id>` | Delete a user |
+| `users posts <user_id>` | List all posts by a user |
+
+### Posts
+
+| Command | Description |
+|---|---|
+| `posts create <content> <user_id>` | Create a new post |
+| `posts list` | List all posts |
+| `posts get <id>` | Get post by ID |
+| `posts delete <id>` | Delete a post |
+| `posts comments <post_id>` | List all comments on a post |
+
+### Comments
+
+| Command | Description |
+|---|---|
+| `comments create <content> <post_id> <user_id>` | Create a new comment |
+| `comments list <post_id>` | List comments for a post |
+| `comments delete <id>` | Delete a comment |

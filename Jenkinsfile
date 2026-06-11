@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PRODUCTION_DIR = "/home/swepi/Desktop/FastAPIStarter-main"
+        PRODUCTION_DIR = "/home/swepi/Desktop/postits"
         VENV_DIR       = "${WORKSPACE}/venv"
     }
 
