@@ -195,12 +195,87 @@ def comment_list(post_id: int = typer.Argument(..., help="Post ID to list commen
         print_table(rows, headers=["ID", "Content", "Post ID", "User ID", "Created At"])
 
 
+@comments_app.command("list-all")
+def comment_list_all():
+    with get_cli_session() as session:
+        repo = CommentRepository(session)
+        comments = repo.get_all_comments()
+        rows = [[c.comment_id, c.content[:60], c.post_id, c.user_id, c.created_at] for c in comments]
+        print_table(rows, headers=["ID", "Content", "Post ID", "User ID", "Created At"])
+
+
 @comments_app.command("delete")
 def comment_delete(comment_id: int = typer.Argument(..., help="Comment ID")):
     with get_cli_session() as session:
         repo = CommentRepository(session)
         repo.delete(comment_id)
         typer.echo(f"Comment {comment_id} deleted")
+
+
+@app.command("seed")
+def seed(
+    force: bool = typer.Option(False, "--force", "-f", help="Drop existing data before seeding"),
+):
+    if force:
+        from app.database import drop_all, create_db_and_tables
+        drop_all()
+        create_db_and_tables()
+        typer.echo("Dropped existing tables and recreated them.")
+    with get_cli_session() as session:
+        user_repo = UserRepository(session)
+        post_repo = PostRepository(session)
+        comment_repo = CommentRepository(session)
+
+        users_data = [
+            ("alice", "alice@example.com", encrypt_password("password"), "Alice Johnson", "admin"),
+            ("bob", "bob@example.com", encrypt_password("password"), "Bob Smith", "regular_user"),
+            ("charlie", "charlie@example.com", encrypt_password("password"), "Charlie Brown", "regular_user"),
+            ("diana", "diana@example.com", encrypt_password("password"), "Diana Prince", "regular_user"),
+            ("eve", "eve@example.com", encrypt_password("password"), "Eve Adams", "regular_user"),
+        ]
+        users = []
+        for username, email, pwd, name, role in users_data:
+            user = User(username=username, email=email, password=pwd, name=name, role=role)
+            users.append(user_repo.create(user))
+        typer.echo(f"Created {len(users)} users")
+
+        posts_data = [
+            ("Just finished reading a great book on machine learning. Highly recommend 'Deep Learning with Python'!", users[0].user_id, None),
+            ("Beautiful sunset at the beach today! 🏖️", users[1].user_id, ["https://example.com/sunset.jpg"]),
+            ("Anyone else excited about the new Python 3.14 features?", users[2].user_id, None),
+            ("Looking for recommendations on good VS Code extensions for web development.", users[3].user_id, None),
+            ("Deployed my first FastAPI app to production! 🚀", users[0].user_id, None),
+            ("Morning coffee and coding. The perfect combination.", users[4].user_id, None),
+            ("Tips for staying focused during long coding sessions?", users[1].user_id, None),
+            ("Finally understood how async/await works in Python. Game changer!", users[2].user_id, ["https://example.com/async.jpg"]),
+        ]
+        posts = []
+        for content, user_id, media_urls in posts_data:
+            posts.append(post_repo.create(content=content, user_id=user_id, media_urls=media_urls))
+        typer.echo(f"Created {len(posts)} posts")
+
+        comments_data = [
+            ("Thanks for the recommendation! Adding it to my reading list.", posts[0].post_id, users[1].user_id),
+            ("I've read that too, it's fantastic!", posts[0].post_id, users[2].user_id),
+            ("Great shot! Where was this taken?", posts[1].post_id, users[0].user_id),
+            ("The match statement is going to be amazing.", posts[2].post_id, users[3].user_id),
+            ("I use Prettier and ESLint — they're must-haves.", posts[3].post_id, users[4].user_id),
+            ("Congrats! What hosting provider did you go with?", posts[4].post_id, users[1].user_id),
+            ("Nothing beats a good cup of coffee while coding.", posts[5].post_id, users[0].user_id),
+            ("I use the Pomodoro technique — 25 min work, 5 min break.", posts[6].post_id, users[2].user_id),
+            ("Same here! It clicked after watching a talk by Łukasz Langa.", posts[7].post_id, users[3].user_id),
+            ("The structural pattern matching is a lifesaver for parsing.", posts[7].post_id, users[4].user_id),
+            ("What book are you reading next?", posts[0].post_id, users[3].user_id),
+            ("Try the GitHub Copilot extension, it's a game changer!", posts[3].post_id, users[0].user_id),
+            ("How was the deployment process? Any issues?", posts[4].post_id, users[2].user_id),
+            ("I prefer noise-cancelling headphones and lo-fi music.", posts[6].post_id, users[4].user_id),
+            ("Can you share the async code pattern you used?", posts[7].post_id, users[1].user_id),
+        ]
+        for content, post_id, user_id in comments_data:
+            comment_repo.create(content=content, post_id=post_id, user_id=user_id)
+        typer.echo(f"Created {len(comments_data)} comments")
+
+        typer.echo("Database seeded successfully!")
 
 
 if __name__ == "__main__":
