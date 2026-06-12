@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 from app.models.comment import Comment
-from typing import List
+from typing import List, Tuple, Any
 
 
 class CommentRepository:
@@ -22,3 +22,8 @@ class CommentRepository:
         if comment:
             self.db.delete(comment)
             self.db.commit()
+    
+    def get_all_comments(self) -> List[Tuple[int, str,Any]]:
+        statement = (select(Comment.comment_id, Comment.content, Comment.created_at, Comment.user_id).order_by(Comment.created_at.desc()))
+        return self.db.exec(statement).all()
+

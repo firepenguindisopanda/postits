@@ -38,3 +38,9 @@ async def delete_comment(comment_id: int, db: SessionDep, user: AuthDep):
     repo = CommentRepository(db)
     service = CommentService(repo)
     service.delete_comment(comment_id)
+
+@api_router.get("/comments", response_model=list[CommentResponse])
+async def list_all_comments(db: SessionDep):
+    repo = CommentRepository(db)
+    service = CommentService(repo)
+    return service.get_all_comments()

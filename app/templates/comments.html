@@ -1,0 +1,30 @@
+{% extends "authenticated-base.html" %}
+
+{% block external_js %}
+<script src="{{ url_for('static', path='js/comment.js') }}?v=2"></script>
+{% endblock %}
+
+
+{% block subpage_content %}
+
+    <div class="container" id="content">
+        <div class="row">
+            <p>
+                This is table is rendered on the Client. JavaScript code requests the data from <a href="/api/comments">/api/comments</a> and writes it to this page.
+            </p>
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+			  <th>Id</th><th>Post ID</th><th>User ID</th><th>Content</th>
+                  </tr>
+                </thead>
+                <tbody id="result">
+                
+                <tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
