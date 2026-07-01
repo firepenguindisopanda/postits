@@ -18,5 +18,11 @@ class PostService:
     def get_all_posts(self):
         return self.post_repo.get_all()
 
+    def get_feed(self):
+        posts = self.post_repo.get_all_with_users()
+        for post in posts:
+            post["comment_count"] = self.post_repo.get_comment_count(post["post_id"])
+        return posts
+
     def delete_post(self, post_id: int):
         self.post_repo.delete(post_id)

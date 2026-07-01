@@ -19,11 +19,20 @@ class CommentResponse(BaseModel):
     user_id: int
 
 
-@api_router.get("/posts/{post_id}/comments", response_model=list[CommentResponse])
+class CommentDetailResponse(BaseModel):
+    comment_id: int
+    content: str
+    post_id: int
+    user_id: int
+    username: str = ""
+    created_at: str = ""
+
+
+@api_router.get("/posts/{post_id}/comments", response_model=list[CommentDetailResponse])
 async def list_comments(post_id: int, db: SessionDep):
     repo = CommentRepository(db)
     service = CommentService(repo)
-    return service.get_post_comments(post_id)
+    return service.get_post_comments_with_users(post_id)
 
 
 @api_router.post("/comments", response_model=CommentResponse, status_code=status.HTTP_201_CREATED)
@@ -39,8 +48,8 @@ async def delete_comment(comment_id: int, db: SessionDep, user: AuthDep):
     service = CommentService(repo)
     service.delete_comment(comment_id)
 
-@api_router.get("/comments", response_model=list[CommentResponse])
+@api_router.get("/comments", response_model=list[CommentDetailResponse])
 async def list_all_comments(db: SessionDep):
     repo = CommentRepository(db)
     service = CommentService(repo)
-    return service.get_all_comments()
+    return service.get_all_comments_with_users()

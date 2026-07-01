@@ -1,0 +1,37 @@
+{% extends "authenticated-base.html" %}
+
+{% block external_css %}
+<link href="{{ url_for('static', path='css/feed.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block external_js %}
+<script src="{{ url_for('static', path='js/feed.js') }}?v=1"></script>
+{% endblock %}
+
+{% block subpage_content %}
+<div class="container" id="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex gap-3">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-placeholder">{{ user.username[0]|upper }}</div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <textarea id="post-content" class="form-control border-0 bg-light" rows="2" placeholder="What's on your mind?"></textarea>
+                            <div class="d-flex justify-content-end mt-2">
+                                <button id="btn-create-post" class="btn btn-primary btn-sm px-4">Share</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="feed-container">
+                <div class="text-center py-5 text-muted" id="feed-loading">Loading posts...</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

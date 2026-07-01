@@ -11,8 +11,14 @@ class CommentService:
     def get_post_comments(self, post_id: int):
         return self.comment_repo.get_by_post(post_id)
 
+    def get_post_comments_with_users(self, post_id: int):
+        return self.comment_repo.get_by_post_with_users(post_id)
+
     def get_all_comments(self):
         return self.comment_repo.get_all_comments()
+
+    def get_all_comments_with_users(self):
+        return self.comment_repo.get_all_comments_with_users()
 
     def delete_comment(self, comment_id: int):
         self.comment_repo.delete(comment_id)

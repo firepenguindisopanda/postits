@@ -1,5 +1,6 @@
 from sqlmodel import Session, select
 from app.models.comment import Comment
+from app.models.user import User
 from typing import List
 
 
@@ -23,6 +24,45 @@ class CommentRepository:
             self.db.delete(comment)
             self.db.commit()
     
+    def get_by_post_with_users(self, post_id: int) -> list[dict]:
+        statement = (
+            select(Comment, User.username)
+            .join(User, Comment.user_id == User.user_id)
+            .where(Comment.post_id == post_id)
+            .order_by(Comment.created_at.asc())
+        )
+        results = self.db.exec(statement).all()
+        return [
+            {
+                "comment_id": c.comment_id,
+                "content": c.content,
+                "post_id": c.post_id,
+                "user_id": c.user_id,
+                "username": username,
+                "created_at": c.created_at.isoformat() if c.created_at else None,
+            }
+            for c, username in results
+        ]
+
+    def get_all_comments_with_users(self) -> list[dict]:
+        statement = (
+            select(Comment, User.username)
+            .join(User, Comment.user_id == User.user_id)
+            .order_by(Comment.created_at.desc())
+        )
+        results = self.db.exec(statement).all()
+        return [
+            {
+                "comment_id": c.comment_id,
+                "content": c.content,
+                "post_id": c.post_id,
+                "user_id": c.user_id,
+                "username": username,
+                "created_at": c.created_at.isoformat() if c.created_at else None,
+            }
+            for c, username in results
+        ]
+
     def get_all_comments(self) -> list:
         statement = (select(Comment.comment_id, Comment.content, Comment.post_id, Comment.created_at, Comment.user_id).order_by(Comment.created_at.desc()))
         return self.db.exec(statement).all()

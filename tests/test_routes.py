@@ -254,3 +254,46 @@ class TestCommentRoutes:
             json={"content": "No auth", "post_id": 1},
         )
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+class TestFeedRoute:
+    def test_feed_returns_html_for_auth_user(self, authorized_client):
+        response = authorized_client.get("/feed")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.headers["content-type"].startswith("text/html")
+
+    def test_feed_api_returns_posts_with_usernames(self, authorized_client):
+        authorized_client.post("/api/posts", json={"content": "Feed post 1"})
+        authorized_client.post("/api/posts", json={"content": "Feed post 2"})
+        response = authorized_client.get("/api/feed")
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert len(data) >= 2
+        assert data[0]["username"] == "testuser"
+        assert data[0]["comment_count"] == 0
+        assert "created_at" in data[0]
+
+    def test_feed_api_returns_comment_count(self, authorized_client):
+        post_resp = authorized_client.post("/api/posts", json={"content": "Count test"})
+        post_id = post_resp.json()["post_id"]
+        authorized_client.post("/api/comments", json={"content": "C1", "post_id": post_id})
+        authorized_client.post("/api/comments", json={"content": "C2", "post_id": post_id})
+        response = authorized_client.get("/api/feed")
+        data = response.json()
+        post = next(p for p in data if p["post_id"] == post_id)
+        assert post["comment_count"] == 2
+
+    def test_comments_include_username(self, authorized_client):
+        post_resp = authorized_client.post("/api/posts", json={"content": "Test post"})
+        post_id = post_resp.json()["post_id"]
+        authorized_client.post("/api/comments", json={"content": "Nice!", "post_id": post_id})
+        response = authorized_client.get(f"/api/posts/{post_id}/comments")
+        data = response.json()
+        assert len(data) == 1
+        assert data[0]["username"] == "testuser"
+        assert "created_at" in data[0]
+
+    def test_feed_empty(self, authorized_client):
+        response = authorized_client.get("/api/feed")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == []

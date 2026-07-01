@@ -20,6 +20,23 @@ class PostResponse(BaseModel):
     user_id: int
 
 
+class FeedPostResponse(BaseModel):
+    post_id: int
+    content: str
+    media_urls: Optional[List[str]] = None
+    user_id: int
+    username: str = ""
+    created_at: str = ""
+    comment_count: int = 0
+
+
+@api_router.get("/feed", response_model=list[FeedPostResponse])
+async def feed_posts(db: SessionDep):
+    repo = PostRepository(db)
+    service = PostService(repo)
+    return service.get_feed()
+
+
 @api_router.get("/posts", response_model=list[PostResponse])
 async def list_posts(db: SessionDep):
     repo = PostRepository(db)
