@@ -3,7 +3,7 @@ async function loadFeed() {
     container.innerHTML = '<div class="text-center py-5 text-muted">Loading posts...</div>';
 
     try {
-        const response = await fetch('/api/feed');
+        const response = await fetch('/postits/api/feed');
         const posts = await response.json();
 
         if (posts.length === 0) {
@@ -88,7 +88,7 @@ async function toggleComments(btn, postId) {
     list.innerHTML = '<div class="text-muted py-2" style="font-size:13px;">Loading comments...</div>';
 
     try {
-        const response = await fetch('/api/posts/' + postId + '/comments');
+        const response = await fetch('/postits/api/posts/' + postId + '/comments');
         const comments = await response.json();
         list.innerHTML = '';
 
@@ -122,7 +122,7 @@ async function postComment(postId) {
     input.disabled = true;
 
     try {
-        const response = await fetch('/api/comments', {
+        const response = await fetch('/postits/api/comments', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: content, post_id: postId }),
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
         this.textContent = 'Posting...';
 
         try {
-            const response = await fetch('/api/posts', {
+            const response = await fetch('/postits/api/posts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: content }),

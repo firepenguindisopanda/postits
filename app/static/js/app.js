@@ -1,6 +1,6 @@
 
 async function getUserData(){
-    const response = await fetch('/api/users');
+    const response = await fetch('/postits/api/users');
     return response.json();
 }
 

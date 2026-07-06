@@ -1,6 +1,6 @@
 
 async function getCommentData(){
-    const response = await fetch('/api/comments');
+    const response = await fetch('/postits/api/comments');
     return response.json();
 }
 

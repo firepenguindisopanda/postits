@@ -1,7 +1,7 @@
 {% extends "authenticated-base.html" %}
 
 {% block external_js %}
-<script src="{{ url_for('static', path='js/comment.js') }}?v=2"></script>
+<script src="{{ url_for('static', path='js/comment.js') }}?v=3"></script>
 {% endblock %}
 
 
@@ -10,7 +10,7 @@
     <div class="container" id="content">
         <div class="row">
             <p>
-                This is table is rendered on the Client. JavaScript code requests the data from <a href="/api/comments">/api/comments</a> and writes it to this page.
+                This is table is rendered on the Client. JavaScript code requests the data from <a href="/postits/api/comments">/postits/api/comments</a> and writes it to this page.
             </p>
         </div>
         <div class="row">

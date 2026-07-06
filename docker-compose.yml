@@ -1,0 +1,19 @@
+services:
+  postits:
+    build: .
+    container_name: postits
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - ROOT_PATH=/postits
+      - FORWARDED_ALLOW_IPS=*
+    env_file:
+      - .env
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    external: true
+    name: docker_default

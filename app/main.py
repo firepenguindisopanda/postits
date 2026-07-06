@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(middleware=[
+app = FastAPI(root_path=get_settings().root_path, middleware=[
     Middleware(SessionMiddleware, secret_key=get_settings().secret_key)
 ],
     lifespan=lifespan

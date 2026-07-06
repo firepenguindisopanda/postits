@@ -73,26 +73,26 @@
 
         <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/app' }}" href="/app">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == url_for('user_home_view') }}" href="{{ url_for('user_home_view') }}">
                     <span class="material-symbols-outlined me-2">people</span>
                     Users
                 </a>
             </li>
             <li class="nav-item">
-		    <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/comments' }}" href="/comments">
+		    <a class="nav-link d-flex align-items-center {{ 'active' if request.path == url_for('comment_home_view') }}" href="{{ url_for('comment_home_view') }}">
 			    <span class="material-symbols-outlined me-2">people</span>
 			    Comments
 		    </a>
 	    </li>
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == '/feed' }}" href="/feed">
+                <a class="nav-link d-flex align-items-center {{ 'active' if request.path == url_for('feed_view') }}" href="{{ url_for('feed_view') }}">
                     <span class="material-symbols-outlined me-2">dynamic_feed</span>
                     Feed
                 </a>
             </li>
             
             <li class="nav-item mt-auto">
-                <a class="nav-link d-flex align-items-center text-danger" href="/logout">
+                <a class="nav-link d-flex align-items-center text-danger" href="{{ url_for('logout') }}">
                     <span class="material-symbols-outlined me-2">logout</span>
                     Logout
                 </a>
